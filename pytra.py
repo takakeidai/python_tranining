@@ -116,3 +116,37 @@ print(change3.change())
 ## この方法では、上の3つのインスタンス変数のもつchangeの値がall_changesに辞書型として反映されない。
 ##　最後のインスタンスのお釣りだけが辞書型として返ってきてします。どうするべきか。
 print(Allchange.all_changes)
+
+
+
+####　　修正後   #####
+
+def calculate_change(total, money_paid):
+    currency_dict = {
+        "10000": 0,
+        "5000": 0,
+        "1000": 0,
+        "500": 0,
+        "100": 0,
+        "50": 0,
+        "10": 0,
+        "5": 0,
+        "1": 0
+    }
+    if total > money_paid:
+        return None
+    changes_total = money_paid - total
+    for i in currency_dict.keys():
+        if int(i) > changes_total:
+            pass
+        else:
+            a = changes_total // int(i)
+            currency_dict[str(i)] = a
+            changes_total = changes_total - int(i)
+    return currency_dict
+
+
+print(calculate_change(1600, 1000))
+print(calculate_change(1000, 1600))
+print(calculate_change(1600, 1600))
+print(calculate_change(1550, 1600))
