@@ -141,7 +141,7 @@ def calculate_change(total, money_paid):
             pass
         else:
             a = changes_total // int(i)
-            currency_dict[str(i)] = a
+            currency_dict[i] = a
             changes_total = changes_total - int(i)
     return currency_dict
 
@@ -150,3 +150,8 @@ print(calculate_change(1600, 1000))
 print(calculate_change(1000, 1600))
 print(calculate_change(1600, 1600))
 print(calculate_change(1550, 1600))
+
+
+list = [4,9,4]
+for i in list:
+    print(i)
