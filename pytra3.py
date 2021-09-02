@@ -21,7 +21,6 @@ food_orders3 = [{'name':'french fries','wait_time':5},
 def calculate_wait_time(orders):
     list_wait_time = []
     for i in orders:
-        x = i['wait_time']
         list_wait_time.append(i['wait_time'])
         list_wait_time.sort(reverse=True)
 
