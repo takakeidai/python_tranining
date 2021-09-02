@@ -1,129 +1,165 @@
 
+
+
 import math
 from decimal import Decimal, ROUND_HALF_UP
 
-def amount_of_study(total_pages, periods, effort_of_pages):
-    if periods is None and effort_of_pages is not None:
-        if total_pages == 0 or effort_of_pages <= 0:
-            return None
-        total_study = {}
-        if total_pages > effort_of_pages:
-            total_period = 60 + math.ceil(total_pages / effort_of_pages)
-            total_study["total period"] = total_period
+def get_pages_to_study(total_pages_of_book, total_days_to_study, num_of_pages_to_study_at_once):
+    total_study = {}
+    round = {'round1': 1, 'round2': 2, 'round3': 14, 'round4': 60}
+    finalround = next(reversed(round), None)
+    num_of_pages_to_study1 = total_pages_of_book / total_days_to_study
+    num_of_pages_to_study_decimal = Decimal(num_of_pages_to_study1).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
+    total_study['number of pages to study'] = int(num_of_pages_to_study_decimal)
+
+    if total_days_to_study != 0 and total_pages_of_book < total_days_to_study:
+        num_of_pages_to_study = 1
+        total_study['number of pages to study'] = num_of_pages_to_study
+
+    elif num_of_pages_to_study_at_once != 0 and total_pages_of_book < num_of_pages_to_study_at_once:
+        total_days = round[finalround]
+        total_study['total days to finish'] = total_days
+
+
+
+    def isDateswithin(num_of_dates):
+        if 1 <= num_of_dates <= 2:
+            return 1
+        if 3 <= num_of_dates <= 14:
+            return 2
+        if 15 <= num_of_dates <= 60:
+            return 3
+        if 61 <= num_of_dates:
+            return 4
+
+    def mapping(index):
+        if index == 1:
+            return 1
+        if index == 2:
+            return 2
+        if index == 3:
+            return 14
+        if index == 4:
+            return 60
+
+    def indicator_function(num_of_pages_to_study_at_once):
+        if num_of_pages_to_study_at_once == 0:
+            return num_of_pages_to_study_decimal
         else:
-            total_period = 60
-            total_study["total period"] = total_period
+            return num_of_pages_to_study_at_once
 
-        def number_of_dates(numberofdates):
-            remained = total_period - (numberofdates - 1)
-            total_study["remained"] = remained
-            if 1 <= numberofdates <= 2:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-            if 3 <= numberofdates <= 14:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                second_study = str(((((numberofdates - 2) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 2) * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-                total_study["round 2"] = second_study
-            if 15 <= numberofdates <= 60:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                second_study = str(((((numberofdates - 2) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 2) * effort_of_pages, total_pages))
-                third_study = str(((((numberofdates - 14) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 14) * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-                total_study["round 2"] = second_study
-                total_study["round 3"] = third_study
-            if 61 <= numberofdates:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                second_study = str(((((numberofdates - 2) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 2) * effort_of_pages, total_pages))
-                third_study = str(((((numberofdates - 14) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 14) * effort_of_pages, total_pages))
-                fourth_study = str(((((numberofdates - 60) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 60) * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-                total_study["round 2"] = second_study
-                total_study["round 3"] = third_study
-                total_study["round 4"] = fourth_study
 
-            return total_study
-        return number_of_dates
-
-    elif periods is not None and effort_of_pages is None:
-        if total_pages == 0 or periods == 0:
+    def get_total_study(num_of_dates):
+        if total_pages_of_book <= 0 and total_days_to_study <= 0 and num_of_pages_to_study_at_once <= 0:
             return None
 
-        def number_of_dates(numberofdates):
-            if numberofdates > periods:
-                return None
-            total_study = {}
-            if total_pages > periods:
-                pages_for_study = total_pages / periods
-                effort_of_pages = Decimal(pages_for_study).quantize(Decimal('0'), rounding=ROUND_HALF_UP)
-                total_study["effort_of_pages"] = int(effort_of_pages)
-            else:
-                effort_of_pages = 1
+        elif total_pages_of_book == 0 or (total_days_to_study == 0 or num_of_pages_to_study_at_once != 0) and (
+                total_days_to_study != 0 or num_of_pages_to_study_at_once == 0):
+            return None
 
-            if 1 <= numberofdates <= 2:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-            if 3 <= numberofdates <= 14:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                second_study = str(((((numberofdates - 2) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 2) * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-                total_study["round 2"] = second_study
-            if 15 <= numberofdates <= 60:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                second_study = str(((((numberofdates - 2) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 2) * effort_of_pages, total_pages))
-                third_study = str(((((numberofdates - 14) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 14) * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-                total_study["round 2"] = second_study
-                total_study["round 3"] = third_study
-            if 61 <= numberofdates:
-                first_study = str((((numberofdates - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min(numberofdates * effort_of_pages, total_pages))
-                second_study = str(((((numberofdates - 2) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 2) * effort_of_pages, total_pages))
-                third_study = str(((((numberofdates - 14) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 14) * effort_of_pages, total_pages))
-                fourth_study = str(((((numberofdates - 60) - 1) * effort_of_pages) + 1)) + '~' + str(
-                    min((numberofdates - 60) * effort_of_pages, total_pages))
-                total_study["round 1"] = first_study
-                total_study["round 2"] = second_study
-                total_study["round 3"] = third_study
-                total_study["round 4"] = fourth_study
-
-            return total_study
-        return number_of_dates
-
-    elif periods is not None and effort_of_pages is not None:
-        return None
-    elif periods is None and effort_of_pages is None:
-        return None
+        if num_of_pages_to_study_at_once != 0 and total_days_to_study == 0 and total_pages_of_book > num_of_pages_to_study_at_once:
+            total_days = round[finalround] + math.ceil(total_pages_of_book / num_of_pages_to_study_at_once)
+            total_study['total days to finish'] = total_days
+            remained = total_days - (num_of_dates - 1)
+            total_study['remained days'] = remained
 
 
-# 学習したい本のトータルページ数と、その本を終わらせたい日数を入力する。
-# 1日に勉強するページ数はNoneとして、指定しない。
-study1 = amount_of_study(450,84, None)
-# 勉強開始から何日目か(あるいは何回目の勉強か)を入力すると、
-# その日にどのページを学習していけばいいかが出力される。
-print(study1(17))
+        for i in range(1, (isDateswithin(num_of_dates)) + 1):
+            x = str((((num_of_dates - mapping(i)) * indicator_function(num_of_pages_to_study_at_once)) + 1)) + '~' + str(min(num_of_dates * indicator_function(num_of_pages_to_study_at_once), total_pages_of_book))
+            total_study['round' + str(i)] = x
 
-# 学習したい本のトータルページ数と、1日に勉強可能なページ数を入力する。
-# どれくらいの期間・日数で勉強を終わらせたいかはNoneとして、指定しない。
-study1 = amount_of_study(450, None, 4)
-# 勉強開始から何日目か(あるいは何回目の勉強か)を入力すると、全体でその本を完読する日数と残りの日数が表示され、
-# またその日にどのページを学習していけばいいかが出力される。
-print(study1(18))
+
+
+        return total_study
+
+
+    return get_total_study
+
+
+study_1 = get_pages_to_study(450, 84, 0)
+print(study_1(3))
+
+"""
+study_2 = get_pages_to_study(450, 0, 0)
+print(study_2(3))
+"""
+
+"""
+study_3 = get_pages_to_study(450,0,4)
+print(study_3(3))
+"""
+
+study_4 = get_pages_to_study(450,84,4)
+print(study_4(3))
+
+"""
+study_5 = get_pages_to_study(0,0,4)
+print(study_5(3))
+"""
+
+study_6 = get_pages_to_study(0,84,0)
+print(study_6(3))
+
+study_7 = get_pages_to_study(0,84,4)
+print(study_7(3))
+
+study_8 = get_pages_to_study(450, 500, 0)
+print(study_8(3))
+
+"""
+study_9 = get_pages_to_study(450, 0, 900)
+print(study_9(3))
+"""
+
+
+
+##########
+
+i = 1
+num_of_dates = 3
+num_of_pages_to_study_decimal = 1
+num_of_pages_to_study_at_once = 0
+total_pages_of_book = 450
+total_study = {}
+
+
+def num_of_review(num_of_dates):
+    if 1 <= num_of_dates <= 2:
+        return 1
+    if 3 <= num_of_dates <= 14:
+        return 2
+    if 15 <= num_of_dates <= 60:
+        return 3
+    if 61 <= num_of_dates:
+        return 4
+
+
+def mapping(index):
+    if index == 1:
+        return 1
+    if index == 2:
+        return 2
+    if index == 3:
+        return 14
+    if index == 4:
+        return 60
+
+
+def indicator_function(num_of_pages_to_study_at_once):
+    if num_of_pages_to_study_at_once == 0:
+        return num_of_pages_to_study_decimal
+    else:
+        return num_of_pages_to_study_at_once
+
+###  A :  num_of_pages_to_study_at_once == 0 or num_of_pages_to_study_decimal == 1 or num_of_pages_to_study == 1
+if A:
+    list_of_review = [0,2,14,60]
+    for i in range(1, (num_of_review(num_of_dates))+1):
+        x = str(num_of_dates-list[i])
+        total_study['round' + str(i)] = x
+else:
+    for i in range(1, (isDateswithin(num_of_dates)) + 1):
+        x = str((((num_of_dates - mapping(i)) * indicator_function(num_of_pages_to_study_at_once)) + 1)) + '~' + str(
+            min(num_of_dates * indicator_function(num_of_pages_to_study_at_once), total_pages_of_book))
+        total_study['round' + str(i)] = x
+
