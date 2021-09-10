@@ -1,89 +1,88 @@
+### データベースに関数を適応した場合
 
-                        ### 問題4 ###
-
-
-data_sources = [
-    {'title': 'how to write good code', 
-    'body': 'who knows', 
-    'genres_1':'tech', 
-    'genres_2':'python', 
-    'genres_3':'web dev', 
-    'created_at':'2019-12-07', 
-    'updated_at':'2020-01-14'},
-    {'title': 'how to be rich', 
-    'body': 'He knows', 
-    'genres_1':'finance', 
-    'genres_2':'investment', 
-    'genres_3':'economics', 
-    'created_at':'2019-12-07', 
-    'updated_at':'2020-01-14'},
-    {'title': 'how to be happy', 
-    'body': 'my mom knows all', 
-    'genres_1':'self-compassion', 
-    'genres_2':'confidence', 
-    'genres_3':'philosophy', 
-    'created_at':'2019-12-07', 
-    'updated_at':'2020-01-14'},
-    ]
+import datetime
 
 
-class Multi_Data():
+# 一番最初のデータベース：空のリスト、Blogクラスからインスタンスが生成されるたびにdata_setsに追加されていく。updateメソッドが行われるたびにもdata_setsが更新されていく。
+data_sets = []
 
-    def __init__(self, data_sources, order_of_data):
-        self.order_of_data = order_of_data
-        self.data_sources = data_sources
-        self.data_source = self.data_sources[self.order_of_data]
-        self.title = self.data_source['title']
-        self.body = self.data_source['body']
-        self.genres_1 = self.data_source['genres_1']
-        self.genres_2 = self.data_source['genres_2']
-        self.genres_3 = self.data_source['genres_3']
-    
-    def modify_title(self, title):
+
+# Blogクラスから新しくインスタンスが生成されるたびにdata_setsにそのインスタンス=ブログの情報をdata_setsに追加する関数
+def Data_set_append(data_set):
+    data_sets.append(data_set)
+
+# updateメソッドが呼び出されるたびに、data_setsの情報を書き換える関数。
+def Data_set_change(data_set):
+    for data in data_sets:
+        if data['id'] == data_set['id']:
+            for key_of_data_set in data.keys():
+                data[key_of_data_set] = data_set[key_of_data_set]
+
+
+# Blogクラス
+class Blog():
+
+    __counter = 0
+
+    def __init__(self, title, body, genres):
         self.title = title
-        self.data_sources[self.order_of_data]['title'] = self.title
-
-    def modify_body(self, body):
         self.body = body
-        self.data_sources[self.order_of_data]['body'] = self.body
-
-    def modify_genres_1(self, genres_1):
-        self.genres_1 = genres_1
-        self.data_sources[self.order_of_data]['genres_1'] = self.genres_1
-    
-    def modify_genres_2(self, genres_2):
-        self.genres_2 = genres_2
-        self.data_sources[self.order_of_data]['genres_2'] = self.genres_2
-
-    def modify_genres_3(self, genres_3):
-        self.genres_3 = genres_3
-        self.data_sources[self.order_of_data]['genres_3'] = self.genres_3
-
-    def show_data_sources(self):
-        return self.data_sources
+        self.genres = genres
+        Blog.__counter += 1
+        self.id = Blog.__counter
+        self.created_at = str(datetime.date.today())
+        self.updated_at = None
+        self.data_set = {
+            'title':self.title,
+            'body': self.body,
+            'genres':self.genres,
+            'created_at':self.created_at,
+            'updated_at':self.updated_at,
+            'id':self.id}
+        Data_set_append(self.data_set)
 
     
+    def update(self, title, body, genres):
+        if title is None:
+            pass
+        elif title is not None:
+            self.title = title
+        if body is None:
+            pass
+        elif body is not None:
+            self.body = body
+        if  genres is None:
+            pass
+        elif genres is not None:
+            self.genres = genres
+        self.updated_at = str(datetime.date.today())
+        self.data_set = {
+            'title':self.title,
+            'body': self.body,
+            'genres':self.genres,
+            'created_at':self.created_at,
+            'updated_at':self.updated_at,
+            'id':self.id}
+        Data_set_change(self.data_set)
 
-# dictリスト全体のdata_sourcesで、変更したいデータの番号を指定する。multi_data = Multi_Data(data_sources,1)は、data_sourcesの1番目のdict内{}のデータにアクセスできる。
-# 応用を効かせれば、created_atの日付を指定して取り出したいデータを指定できそう。
-
-multi_data = Multi_Data(data_sources,1)
-
-# data_sourcesの1番目のdict内{}の各データ title, body, genres_1, genres_2, genres_3にアクセスできる。
-print(multi_data.title)
-print(multi_data.body)
-print(multi_data.genres_1)
-print(multi_data.genres_2)
-print(multi_data.genres_3)
 
 
-# genres_2に変更を加えるメソッド：'how to be rich'を'how to graduate prestigeous university'に変更
+# 3つのブログを作成
+blog_1 = Blog('how to write good code', 'who knows',['tech','python','web dev'])
+blog_2 = Blog('how to be rich', 'He knows',['finance','investment','economics'])
+blog_3 = Blog('how to be happy', 'my mom knows',['self-compassion','confidence','philosophy'])
 
-multi_data.modify_genres_2('how to graduate prestigeous university')
-print(multi_data.genres_2)
+#　ブログのタイトルを見る
+print(blog_1.title)
+
+#　3つのブログが作成された時点でのデータベースのデータを見る
+print(data_sets)
 
 
-# 変更後のdictリスト全体を返すメソッド：'how to be rich'を'how to graduate prestigeous university'に変更された後のdictリスト全体
-print(multi_data.show_data_sources())
+# ブログ2のタイトルを修正
+blog_2.update('how to be smart', None, None)
+
+#　修正後のデーターベースのデータ全体を見る
+print(data_sets)
 
 
