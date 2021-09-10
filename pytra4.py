@@ -8,11 +8,11 @@ data_sets = []
 
 
 # Blogクラスから新しくインスタンスが生成されるたびにdata_setsにそのインスタンス=ブログの情報をdata_setsに追加する関数
-def Data_set_append(data_set):
+def append_data_set(data_set):
     data_sets.append(data_set)
 
 # updateメソッドが呼び出されるたびに、data_setsの情報を書き換える関数。
-def Data_set_change(data_set):
+def update_data_set(data_set):
     for data in data_sets:
         if data['id'] == data_set['id']:
             for key_of_data_set in data.keys():
@@ -39,7 +39,7 @@ class Blog():
             'created_at':self.created_at,
             'updated_at':self.updated_at,
             'id':self.id}
-        Data_set_append(self.data_set)
+        append_data_set(self.data_set)
 
     
     def update(self, title, body, genres):
@@ -63,7 +63,7 @@ class Blog():
             'created_at':self.created_at,
             'updated_at':self.updated_at,
             'id':self.id}
-        Data_set_change(self.data_set)
+        update_data_set(self.data_set)
 
 
 
