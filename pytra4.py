@@ -1,88 +1,75 @@
-### データベースに関数を適応した場合
+
+
 
 import datetime
 
 
-# 一番最初のデータベース：空のリスト、Blogクラスからインスタンスが生成されるたびにdata_setsに追加されていく。updateメソッドが行われるたびにもdata_setsが更新されていく。
-data_sets = []
+data_sets = [
+    {'title': 'how to write good code', 
+    'body': 'who knows', 
+    'genres' : ['tech','python','web dev'],
+    'created_at':'2019-07-03', 
+    'updated_at':'2020-06-14',
+    'id':1},
+    {'title': 'how to be rich', 
+    'body': 'He knows', 
+    'genres' : ['finance','investment','economics'],
+    'created_at':'2019-02-18', 
+    'updated_at':'2020-01-20',
+    'id':2},
+    {'title': 'how to be happy', 
+    'body': 'my mom knows all', 
+    'genres' : ['self-compassion','confidence','philosophy'],
+    'created_at':'2019-08-30', 
+    'updated_at':'2020-11-06',
+    'id':3}
+    ]
 
 
-# Blogクラスから新しくインスタンスが生成されるたびにdata_setsにそのインスタンス=ブログの情報をdata_setsに追加する関数
-def append_data_set(data_set):
-    data_sets.append(data_set)
-
-# updateメソッドが呼び出されるたびに、data_setsの情報を書き換える関数。
-def update_data_set(data_set):
-    for data in data_sets:
-        if data['id'] == data_set['id']:
-            for key_of_data_set in data.keys():
-                data[key_of_data_set] = data_set[key_of_data_set]
 
 
-# Blogクラス
+
+
 class Blog():
-
-    __counter = 0
-
-    def __init__(self, title, body, genres):
+    def __init__(self, title, body, genres, id):
         self.title = title
         self.body = body
-        self.genres = genres
-        Blog.__counter += 1
-        self.id = Blog.__counter
+        self.genrfes = genres
         self.created_at = str(datetime.date.today())
         self.updated_at = None
-        self.data_set = {
-            'title':self.title,
-            'body': self.body,
-            'genres':self.genres,
-            'created_at':self.created_at,
-            'updated_at':self.updated_at,
-            'id':self.id}
-        append_data_set(self.data_set)
+        self.id = id
 
-    
-    def update(self, title, body, genres):
-        if title is None:
-            pass
-        elif title is not None:
-            self.title = title
-        if body is None:
-            pass
-        elif body is not None:
-            self.body = body
-        if  genres is None:
-            pass
-        elif genres is not None:
-            self.genres = genres
-        self.updated_at = str(datetime.date.today())
-        self.data_set = {
-            'title':self.title,
-            'body': self.body,
-            'genres':self.genres,
-            'created_at':self.created_at,
-            'updated_at':self.updated_at,
-            'id':self.id}
-        update_data_set(self.data_set)
+
+    def update(self):
+        id_list = [ data['id'] for data in data_sets]
+        if self.id not in id_list:
+            print('no data in data base')
+        else:
+            for data in data_sets:
+                if data['id'] == self.id:
+                    data['title'] = self.title
+                    data['body'] = self.body
+                    data['genres'] = self.genrfes
+                    data['updated_at'] = str(datetime.date.today())
+                else:
+                    pass
 
 
 
-# 3つのブログを作成
-blog_1 = Blog('how to write good code', 'who knows',['tech','python','web dev'])
-blog_2 = Blog('how to be rich', 'He knows',['finance','investment','economics'])
-blog_3 = Blog('how to be happy', 'my mom knows',['self-compassion','confidence','philosophy'])
+# blog_1のタイトルだけかわったインスタンスを生成、idも1で同じもの
+blog_1 = Blog('the best code ever','my friend knows', ['sports','tennis','racket'],1)
 
-#　ブログのタイトルを見る
-print(blog_1.title)
 
-#　3つのブログが作成された時点でのデータベースのデータを見る
+# blog_2で、全く新しいブログのインスタンスを生成、idは4
+blog_2 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'],4)
+
+
+
+# blog_1.update()をやってみる
+blog_1.update()
+
+# blog_2.updateをやってみる。blog_2はデータベース上にないため、上書きするものがなく no data in data beseとなるはず
+blog_2.update()
+
+# データベースが変わっているかみてみる。
 print(data_sets)
-
-
-# ブログ2のタイトルを修正
-blog_2.update('how to be smart', None, None)
-
-#　修正後のデーターベースのデータ全体を見る
-print(data_sets)
-
-
