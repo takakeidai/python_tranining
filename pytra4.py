@@ -34,25 +34,17 @@ class Blog():
     def __init__(self, title, body, genres, id):
         self.title = title
         self.body = body
-        self.genrfes = genres
-        self.created_at = str(datetime.date.today())
-        self.updated_at = None
+        self.genres = genres
         self.id = id
 
 
     def update(self):
-        id_list = [ data['id'] for data in data_sets]
-        if self.id not in id_list:
-            print('no data in data base')
-        else:
-            for data in data_sets:
-                if data['id'] == self.id:
-                    data['title'] = self.title
-                    data['body'] = self.body
-                    data['genres'] = self.genrfes
-                    data['updated_at'] = str(datetime.date.today())
-                else:
-                    pass
+        for data in data_sets:
+            if data['id'] == self.id:
+                 data['title'] = self.title
+                 data['body'] = self.body
+                 data['genres'] = self.genres
+                 data['updated_at'] = str(datetime.date.today())
 
 
 
@@ -61,7 +53,7 @@ blog_1 = Blog('the best code ever','my friend knows', ['sports','tennis','racket
 
 
 # blog_2で、全く新しいブログのインスタンスを生成、idは4
-blog_2 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'],4)
+blog_4 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'],4)
 
 
 
@@ -69,7 +61,7 @@ blog_2 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'
 blog_1.update()
 
 # blog_2.updateをやってみる。blog_2はデータベース上にないため、上書きするものがなく no data in data beseとなるはず
-blog_2.update()
+blog_4.update()
 
 # データベースが変わっているかみてみる。
 print(data_sets)
