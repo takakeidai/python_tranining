@@ -36,6 +36,18 @@ class Blog():
         self.body = body
         self.genres = genres
         self.id = id
+    
+    @staticmethod
+    def get_by_id(id):
+        for data in data_sets:
+            if data['id'] == id:
+                return data
+    
+    @staticmethod
+    def get_by_instance(blog):
+        for data in data_sets:
+            if data['id'] == blog.id:
+                return data
 
 
     def update(self):
@@ -48,20 +60,28 @@ class Blog():
 
 
 
-# blog_1のタイトルだけかわったインスタンスを生成、idも1で同じもの
-blog_1 = Blog('the best code ever','my friend knows', ['sports','tennis','racket'],1)
+# # blog_1のタイトルだけかわったインスタンスを生成、idも1で同じもの
+# blog_1 = Blog('the best code ever','my friend knows', ['sports','tennis','racket'],1)
 
 
-# blog_2で、全く新しいブログのインスタンスを生成、idは4
-blog_4 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'],4)
+# # blog_2で、全く新しいブログのインスタンスを生成、idは4
+# blog_4 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'],4)
 
 
 
-# blog_1.update()をやってみる
-blog_1.update()
+# # blog_1.update()をやってみる
+# blog_1.update()
 
-# blog_2.updateをやってみる。blog_2はデータベース上にないため、上書きするものがなく no data in data beseとなるはず
-blog_4.update()
+# # blog_2.updateをやってみる。blog_2はデータベース上にないため、上書きするものがなく no data in data beseとなるはず
+# blog_4.update()
 
-# データベースが変わっているかみてみる。
-print(data_sets)
+# # データベースが変わっているかみてみる。
+# print(data_sets)
+
+#　staticmethodのget(id)の実行
+print(Blog.get_by_id(1))
+
+#　staticmethodのget(id)の実行
+blog = Blog('the best code ever','my friend knows', ['sports','tennis','racket'],1)
+blog.update()
+print(Blog.get_by_instance(blog))
