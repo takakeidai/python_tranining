@@ -2,7 +2,7 @@
 
 
 import datetime
-
+import random
 
 data_sets = [
     {'title': 'how to write good code', 
@@ -28,26 +28,37 @@ data_sets = [
 
 
 
-
-
 class Blog():
-    def __init__(self, title, body, genres, id):
+    def __init__(self, title, body, genres, id = None):
         self.title = title
         self.body = body
         self.genres = genres
         self.id = id
+
+    def create(self):
+        if self.id is None:
+            id_list = [data['id'] for data in data_sets]
+            while True:
+                self.created_at = str(datetime.date.today())
+                unique_num = random.random()
+                if unique_num not in id_list:
+                    self.id = unique_num
+                    new_data = {
+                        'title': self.title, 
+                        'body': self.body,
+                        'genres' : self.genres,
+                        'created_at': self.created_at,
+                        'updated_at': None,
+                        'id':self.id
+                        }
+                    data_sets.append(new_data)
+                    break
+        
     
-    @staticmethod
-    def get_by_id(id):
+    def delete(self):
         for data in data_sets:
-            if data['id'] == id:
-                return data
-    
-    @staticmethod
-    def get_by_instance(blog):
-        for data in data_sets:
-            if data['id'] == blog.id:
-                return data
+            if data['id'] == self.id:
+                data_sets.remove(data)
 
 
     def update(self):
@@ -57,31 +68,26 @@ class Blog():
                  data['body'] = self.body
                  data['genres'] = self.genres
                  data['updated_at'] = str(datetime.date.today())
+        
+
+    @staticmethod
+    def get_by_id(id):
+        for data in data_sets:
+            if data['id'] == id:
+                return data
+
+    
+
+blog_1 = Blog('writing good codes', 'my friends know',['tech','python','web dev'],1)
+blog_2 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'])
+
+blog_1.update()
+blog_2.create()
+
+print(data_sets)
+
+blog_1.delete()
+blog_2.create()
+print(data_sets)
 
 
-
-# # blog_1のタイトルだけかわったインスタンスを生成、idも1で同じもの
-# blog_1 = Blog('the best code ever','my friend knows', ['sports','tennis','racket'],1)
-
-
-# # blog_2で、全く新しいブログのインスタンスを生成、idは4
-# blog_4 = Blog('traveing in Japan', 'I know', ['travel', 'Japan', 'Japanese Food'],4)
-
-
-
-# # blog_1.update()をやってみる
-# blog_1.update()
-
-# # blog_2.updateをやってみる。blog_2はデータベース上にないため、上書きするものがなく no data in data beseとなるはず
-# blog_4.update()
-
-# # データベースが変わっているかみてみる。
-# print(data_sets)
-
-#　staticmethodのget(id)の実行
-print(Blog.get_by_id(1))
-
-#　staticmethodのget(id)の実行
-blog = Blog('the best code ever','my friend knows', ['sports','tennis','racket'],1)
-blog.update()
-print(Blog.get_by_instance(blog))
