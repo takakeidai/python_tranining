@@ -26,6 +26,12 @@ data_sets = [
     ]
 
 
+def generateUniqueId():
+    id = random.random()
+    for data in data_sets:
+        if data['id'] == id:
+            return generateUniqueId()
+    return id
 
 
 class Blog():
@@ -35,24 +41,43 @@ class Blog():
         self.genres = genres
         self.id = id
 
-    def create(self):
-        if self.id is None:
-            id_list = [data['id'] for data in data_sets]
-            while True:
-                self.created_at = str(datetime.date.today())
-                unique_num = random.random()
-                if unique_num not in id_list:
-                    self.id = unique_num
-                    new_data = {
-                        'title': self.title, 
-                        'body': self.body,
-                        'genres' : self.genres,
-                        'created_at': self.created_at,
-                        'updated_at': None,
-                        'id':self.id
-                        }
-                    data_sets.append(new_data)
-                    break
+    
+
+    def create_1(self):
+        id = generateUniqueId()
+        self.created_at = str(datetime.date.today())
+        new_data = {
+            'title': self.title, 
+            'body': self.body,
+            'genres' : self.genres,
+            'created_at': self.created_at,
+            'updated_at': None,
+            'id':id
+            }
+        data_sets.append(new_data)
+    
+
+    def create_2(self):
+        self.id = self.generateUniqueId()
+        self.created_at = str(datetime.date.today())
+        new_data = {
+            'title': self.title, 
+            'body': self.body,
+            'genres' : self.genres,
+            'created_at': self.created_at,
+            'updated_at': None,
+            'id':self.id
+            }
+        data_sets.append(new_data)
+    
+
+    def generateUniqueId(self):
+        self.id = random.random()
+        for data in data_sets:
+            if data['id'] == id:
+                return self.generateUniqueId()
+        return self.id
+
         
     
     def delete(self):
