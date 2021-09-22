@@ -21,19 +21,22 @@ ControllerがModelとViewerの仲介をすることで、Model内で定義され
 
 モデル1だと、クライアントからリクエストを受け取るのはControllerで、その処理の命令をModelに渡しデータベースと色々と処理をさせて、その処理結果をViewに渡して、その上でControllerがViewに出力命令をさせて、Viewがレスポンスする。
 ![MVCモデル１](https://user-images.githubusercontent.com/89739843/134320674-b6035d39-7afa-44ca-b07f-5d9625cf9970.jpeg)
-モデル1のソース：https://gyroibaraki.com/mvc/
+
+- モデル1のソース：https://gyroibaraki.com/mvc/
 
 
 モデル2だと、クライアントから情報を受け取るのはViewで、受け取った情報をControllerに渡しControllerがModelに処理をさせて、その情報をViewが参照して、ControllerがViewに出力命令をする。
 ![MVCモデル2](https://user-images.githubusercontent.com/89739843/134320683-fb1ecd53-0037-4975-8f14-b46cf1dbbd75.png)
-モデル2のソース：https://qiita.com/riku-shiru/items/2bed096e106e72e0b58a
+
+- モデル2のソース：https://qiita.com/riku-shiru/items/2bed096e106e72e0b58a
 
 
 モデル1とモデル2の違いは、クライアントの情報をControllerが受け取ってModelにその指示を伝えるのか、Viewが受け取ってControllerに渡しModelに指示がいくかどうかという点が1つと
 
 モデル3だと、多分明示されてはいないが、ViewとModelの間に矢印がないことから、Modelが操作し得られた情報は一旦Controllerに渡されてそれがViewに渡されると共に出力命令が下り表示される。
 ![MVCモデル3](https://user-images.githubusercontent.com/89739843/134321172-1b237a9c-9f07-4688-a13a-ef51e7cedb9b.jpeg)
-モデル3のソース：https://gihyo.jp/dev/serial/01/start_webap/0003
+
+- モデル3のソース：https://gihyo.jp/dev/serial/01/start_webap/0003
 
 
 
@@ -41,7 +44,8 @@ ControllerがModelとViewerの仲介をすることで、Model内で定義され
 
 モデル4では、Modelの処理結果をModelがViewに渡すのではなく、Viewがその結果を参照している。そしてControllerがViewに表示命令をしてViewがレスポンスする。
 ![MVCモデル4](https://user-images.githubusercontent.com/89739843/134321269-55a4b3fa-0456-498d-8ac5-dc856b9c737d.jpeg)
-モデル4のソース：https://kanda-it-school-kensyu.com/php-framework-contents/pfc_ch07/pfc_0701/
+
+- モデル4のソース：https://kanda-it-school-kensyu.com/php-framework-contents/pfc_ch07/pfc_0701/
 
 おそらくMVCモデルは概念なので、ある程度厳密性を犠牲にしてわかりやすい説明をどのサイトも採用している感じがする。
 
