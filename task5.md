@@ -33,7 +33,7 @@ ControllerがModelとViewerの仲介をすることで、Model内で定義され
 - モデル2のソース：https://qiita.com/riku-shiru/items/2bed096e106e72e0b58a
 
 
-モデル1とモデル2の違いは、クライアントの情報をControllerが受け取ってModelにその指示を伝えるのか、Viewが受け取ってControllerに渡しModelに指示がいくかどうかという点が1つと
+モデル1とモデル2の違いは、クライアントの情報をControllerが受け取ってModelにその指示を伝えるのか、Viewが受け取ってControllerに渡しModelに指示がいくかどうかという点にある。
 
 モデル3だと、多分明示されてはいないが、ViewとModelの間に矢印がないことから、Modelが操作し得られた情報は一旦Controllerに渡されてそれがViewに渡されると共に出力命令が下り表示される。
 
